@@ -1,5 +1,5 @@
 #python-shoppinglist
-shoppinglist = ["sausages", "apple", "toast" ]
+shoppinglist = []
 print(shoppinglist)
 print("Deine Einkaufsliste")
 
