@@ -1,6 +1,7 @@
 #python-shoppinglist
 shoppinglist = ["sausages", "apple", "toast" ]
 print(shoppinglist)
+print("Deine Einkaufsliste")
 
 item = input("Bitte gib den Artikel ein, der zur Liste hinzugefügt werden soll!: ")
 shoppinglist.append(item)
