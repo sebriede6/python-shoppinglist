@@ -1,5 +1,4 @@
-
-    # erstellt eine leere Liste
+# erstellt eine leere Liste
 shoppinglist=[]
 print("Ihre Einkaufsliste ist leer.")
 # nimmt den input des Benutzers und speichert es in der Variable Item
@@ -59,3 +58,4 @@ while True:
         break
     else:
         print("Ungültige Auswahl. Bitte wähle 1, 2 oder 3")   
+
