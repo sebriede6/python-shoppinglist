@@ -4,15 +4,13 @@ print("Ihre Einkaufsliste ist leer.")
 # nimmt den input des Benutzers und speichert es in der Variable Item
 def add_item():
     item = input("Bitte gib den Artikel ein, der zur Einkaufsliste hinzugefügt werden soll: ")
-
+# überprüft ob der User etwas eingegeben hat
     if len(item) == 0:
         print("Ihre Einkaufsliste ist leer, bitte geben Sie einen Artikel ein!")
     else:
         
-    
-    # druckt den eingegebenen Artikel auf dem Bildschirm aus
-     
-        print ("Ihre Artikel :", item)
+        # druckt den eingegebenen Artikel auf dem Bildschirm aus
+         print ("Ihre Artikel :", item)
 
     #fügt den eingegeben Artikel zur Einkaufliste hinzu
 
