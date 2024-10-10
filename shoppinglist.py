@@ -1,59 +1,107 @@
-# erstellt eine leere Liste
-shoppinglist=[]
-print("Ihre Einkaufsliste ist leer.")
-# nimmt den input des Benutzers und speichert es in der Variable Item
-def add_item():
-    item = input("Bitte gib den Artikel ein, der zur Einkaufsliste hinzugefügt werden soll: ")
-# überprüft ob der User etwas eingegeben hat
-    if len(item) == 0:
-        print("Ihre Einkaufsliste ist leer, bitte geben Sie einen Artikel ein!")
-    else:
-        
-        # druckt den eingegebenen Artikel auf dem Bildschirm aus
-         print ("Ihre Artikel :", item)
 
-    #fügt den eingegeben Artikel zur Einkaufliste hinzu
+import sqlite3      # import sqlite3 to be able to connect
 
-    shoppinglist.append(item)
-    print("der Artikel wurde der Liste hinzugefügt")
+# connect to sqlite database (if not exist, create)
+conn = sqlite3.connect('shoppinglist.db')
 
-    # druckt die Einkaufliste mit den eingefügten Artikeln auf diBildschirm
-    print(shoppinglist)
-    
-add_item() 
+# create cursor object to run sql commands
+cursor = conn.cursor()
 
+# create table to groceries.db
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS shoppinglist (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(32) NOT NULL,
+    amount INTEGER NOT NULL,
+    price FLOAT);
+''')
+# create first function to add input (CREATE)
+def add_groceries(name, amount, price):
+    cursor.execute('''
+INSERT INTO shoppinglist (name, amount, price) VALUES (?, ?, ?)
+''', (name, amount, price))
+    conn.commit()
+    print(f"{name} was added.")
 
+# create read function
 def show_shoppinglist():
-   
-   if len(shoppinglist) == 0:
-        print ("Deine Einkaufliste ist leer")
+    cursor.execute('SELECT * FROM shoppinglist')
+    shoppinglist = cursor.fetchall()
+    for groceries in shoppinglist:
+        print(groceries) 
 
-   else:
-       
-        print(shoppinglist)
+# create update function
+def update_groceries(id, name, amount, price):
+    cursor.execute('''
+UPDATE shoppinglist SET name = ?, amount = ?, price = ?
+WHERE id = ?
+''', (name, amount, price, id))
+    conn.commit()
+    print(f"update groceries with id {id}")  
+
+# create search function
+def search_groceries(name):
+    cursor.execute('''
+SELECT * FROM shoppinglist WHERE name = ?
+''', (name,))
+    shoppinglist = cursor.fetchall()
+    print(f"Looking for groceries {name}: ")
+    for groceries in shoppinglist:
+        print(groceries)
+
+# create delete function
+def delete_groceries(id):
+    cursor.execute('''
+DELETE FROM shoppinglist WHERE id = ?
+''',(id,))
+    conn.commit()
+    print(f"Groceries with id {id} has been deleted.")
 
 
-# überprüft den Input des Benutzers und reagiert je nach Eingabe der Zahlen was als nächstes gemacht werden soll
+# While-Loop to keep the programm running 
+def main():
+    while True:
+        print("-----Shoppinglist-----")
+        print("1. Add groceries to your shoppinglist")
+        print("2. Show shoppinglist")
+        print("3. Update groceries")
+        print("4. Search for groceries")
+        print("5. Delete groceries")
+        print("6. End the programm")
 
-while True:
-    print("------------------------ Einkaufsliste -----------------------------")
-    print("Hier ist deine Einkaufsliste")
-    print(shoppinglist)
-    print("Bitte wähle Sie aus, was Sie als nächstes machen möchten: ")
-    print("1. Artikel zur Einkaufsliste hinzufügen")
-    print("2. Einkaufsliste anzeigen")
-    print("3. Programm beenden")
-    choice = int(input("Bitte wählen Sie aus: ")) 
-    print("ihre Auswahl: ", choice)
-    if choice == 1:
-        add_item()
-    elif choice == 2:
-          print("schauen Sie mal nach unten...")
-    elif choice == 3:
-        print("Programm wird beendet! Auf Wiedersehen") 
+        choice = int(input("Please choose 1, 2, 3, 4, 5 or 6: "))
 
-        # break beendet die Schleife 
-        break
-    else:
-        print("Ungültige Auswahl. Bitte wähle 1, 2 oder 3")   
+        if choice == 1:
+            print("Please enter groceries you want to add to your shoppinglist: ")
+            name = input("name: ")
+            amount = input("amount: ")
+            price = input("price: ")
+            add_groceries(name, amount, price)
+        elif choice == 2:
+            show_shoppinglist()
+        elif choice == 3:
+            print("Please update the data with id: ")
+            id = input("id: ")
+            name = input("name: ")
+            amount = input("amount: ")
+            price = input("price: ")
+            update_groceries(id, name, amount, price)
+        elif choice == 4:
+            print("Please enter the name of the groceries you are looking for: ")
+            name = input("name: ")
+            search_groceries(name)
+        elif choice == 5:
+            print("Please enter the id of the groceries you want to delete: ")
+            id = input("id: ")
+            delete_groceries(id)
+        elif choice == 6:
+            print("Program is ended! Goodbye, see you soon.")
+            break                                                           # breaks the loop
+        else:
+            print("Invalid input. Please choose 1, 2, 3, 4, 5 or 6.")   
+if __name__ == "__main__":
+    main()
+
+
+
 
