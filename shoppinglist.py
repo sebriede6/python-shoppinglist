@@ -42,7 +42,8 @@ WHERE id = ?
 # create search function
 def search_groceries(name):
     cursor.execute('''
-SELECT * FROM shoppinglist WHERE name = ?
+ 
+SELECT * FROM shoppinglist WHERE name LIKE "%searchterm%"
 ''', (name,))
     shoppinglist = cursor.fetchall()
     print(f"Looking for groceries {name}: ")
